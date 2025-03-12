@@ -1,4 +1,4 @@
-﻿#NoTrayIcon 
+#NoTrayIcon 
 #Include Class_ImageButton.ahk
 
 
@@ -42,15 +42,15 @@ IfnotExist, %A_ScriptDir%\GosHelper\discord.png
 URLDownloadToFile, https://i.yapx.ru/YjN80.png, %A_ScriptDir%\GosHelper\discord.png
 }
 
-;======================================================================================================================Бейджик
 
-IniRead, name, GosHelper/Settings.ini, USER, name
-if name=ERROR
-    {
-    IniWrite, На груди бейджик FIB с надписью Отдел - статик, GosHelper/Settings.ini, USER, name
-Reload
-}
 ;======================================================================================================================Кнопки
+
+IniRead, frac, GosHelper/Settings.ini, USER, frac, Фракция
+IniRead, otdel, GosHelper/Settings.ini, USER, otdel, Отдел
+IniRead, rank, GosHelper/Settings.ini, USER, rank, Ранг
+IniRead, place, GosHelper/Settings.ini, USER, place, поясе
+IniRead, type, GosHelper/Settings.ini, USER, type, бейджик
+IniRead, resolution, GosHelper/Settings.ini, USER, resolution, 0
 
 IniRead, Key1, GosHelper/Settings.ini, USER, Key1, % A_Space
 Gui, Submit, NoHide
@@ -171,21 +171,24 @@ Gui, Add, Text, x130 y169 w330 h30 +BackgroundTrans, Процесс задерж
 Gui, Add, Text, x130 y209 w330 h30 +BackgroundTrans, Памятка УК
 Gui, Add, Text, x130 y249 w330 h30 +BackgroundTrans, Памятка АК
 Gui, Add, Text, x130 y289 w330 h30 +BackgroundTrans, Памятка ДК
+Gui, Add, Text, x165 y329 w330 h30 +BackgroundTrans, Скриншот
 Gui, Font, S13 CBlack, Bahnschrift SemiBold,
 Gui, Add, Button, x902 y109 w150 h30 gBtnFuncA gWIKI hWnd_BTN_ID_1
 Gui, Add, Button, x902 y149 w150 h30 gBtnFuncA gComand  hWnd_BTN_ID_2
 Gui, Add, Button, x902 y189 w150 h30 gBtnFuncA gLawsuit hWnd_BTN_ID_3
 Gui, Add, Button, x902 y229 w150 h30 gBtnFuncA gZhaloba hWnd_BTN_ID_4
 Gui, Add, Button, x902 y269 w150 h30 gBtnFuncA gSetings hWnd_BTN_ID_5
-Gui, Add, Button, x22 y349 w150 h30 gBtnFuncA gSave hWnd_BTN_ID_7
 Gui, Add, Button, x902 y349 w150 h30 gBtnFuncA gClose hWnd_BTN_ID_6
-Gui, Add, Hotkey, x22 y49 w95 h30 vKey1, %Key1%
+Gui, Add, Button, x22 y369 w150 h30 gBtnFuncA gSave hWnd_BTN_ID_7
+Gui, Add, Button, x125 y329 w30 h30 gBtnFuncA gInfo hWnd_BTN_ID_8
+Gui, Add, Hotkey, x22 y49 w95 h30 vKey1, %Key1% 
 Gui, Add, Hotkey, x22 y89 w95 h30 vKey2, %Key2%
 Gui, Add, Hotkey, x22 y129 w95 h30 vKey3, %Key3%
 Gui, Add, Hotkey, x22 y169 w95 h30 vKey4, %Key4%
 Gui, Add, Hotkey, x22 y209 w95 h30 vKey5, %Key5%
 Gui, Add, Hotkey, x22 y249 w95 h30 vKey6, %Key6%
 Gui, Add, Hotkey, x22 y289 w95 h30 vKey7, %Key7%
+Gui, Add, Hotkey, x22 y329 w95 h30 vKey8, %Key8%
 
 global btn1enable := True ;
 
@@ -218,6 +221,28 @@ ImageButton.Create(_BTN_ID_4,"Подать жалобу", WStyle*)
 ImageButton.Create(_BTN_ID_5,"Настройки", WStyle*) 
 ImageButton.Create(_BTN_ID_6,"Закрыть", WStyle*) 
 ImageButton.Create(_BTN_ID_7,"Сохранить", WStyle*) 
+ImageButton.Create(_BTN_ID_8,"!!!", WStyle*) 
+
+Gui, Настройки: -MaximizeBox
+Gui, Настройки: -SysMenu
+Gui, Настройки: Font, S10 CWhite, Bahnschrift SemiBold
+Gui, Настройки: Color, c4c4c4
+Gui, Настройки: Font, c0x000000
+Gui, Настройки: Add, Text, x2 y10 w70 h18 +0x200 +0x1, Фракция:
+Gui, Настройки: Add, Edit, x65 y10 w50 h21 vfrac, %frac%
+Gui, Настройки: Add, Text, x120 y10 w50 h18 +0x200 +0x1, Отдел:
+Gui, Настройки: Add, Edit, x165 y10 w50 h21 votdel, %otdel%
+Gui, Настройки: Add, Text, x230 y10 w50 h18 +0x200 +0x1, Ранг:
+Gui, Настройки: Add, Edit, x275 y10 w40 h21 vrank, %rank%
+;Gui, Настройки: Add, Edit, x370 y10 w70 h21 vtype, %type%
+;Gui, Настройки: Add, Text, x443 y12 w20 h18, на
+;Gui, Настройки: Add, Edit, x465 y10 w70 h21 vplace, %place%
+Gui, Настройки: Add, Text, x2 y36 w70 h18 +0x200 +0x1, Ваш пол:
+Gui, Настройки: Add, Radio, x70 y33 w80 h23 Group vRadio1 Checked%Radio1%, Мужчина
+Gui, Настройки: Add, Radio, x150 y33 w80 h23 vRadio2 Checked%Radio2%, Женщина
+Gui, Настройки: Add, Button, x12 y56 w70 h20 gSave, Сохранить
+Gui, Настройки: submit
+return
 
 i_name = 
 i_what = 
@@ -281,6 +306,15 @@ Comand:
 MsgBox, 0, Команды, ===== Общие =====`n.адвокат - Вызвов адвоката `n.прок - Вызов прокурора `n.гетто - Запрос поддержики в гетто у SANG`n.взятка - не стоит но ладно добавил`n.рюкзак - досмотреть рюкзак на человеке`n.сумка - досмотреть сумку на человеке`n.ь0 .ь1  .ь7 - mark code 0/1/7`n.опознать - Приглядеться к опознавательному знаку`n.пальчики - Узнать имя человека по отпечаткам пальцев`n`n===== Ст.состав =====`n.spcars - Респкар через 30 сек`n.гос1 - Узнать занята ли гос волна`n.гос2 - Занять гос. волну`n.госфиб - Отправить гос. волну`n`n===== FA =====`n.похитка - Взять похищение`n.требования - Ответ в /dep что запросили похитители`n.неадекват - Ответ в /dep о неадекватные требования на похищении `n.жучок - Положить жучок в сумку с деньгами`n.спасли - Ответ в деп что заложникии спасены`n`n===== DEA =====`n.куст - Срезать куст`n`n===== CID =====`n.дрон - включить и синхронизировать дрон`n.полиграф - Достать и подключить полиграф`n.чистка - При рейде `n.скинуть - Всё всё с рейда в багажник `n`n===== IB =====`n.флешка - Cнятие записей с боди-камеры`n.NDA - Достать и подписать NDA (2 части F12 - продолжить)`n`n=====Альтернативные команды=====`n.аи - /fb   .a - /f   .вуз - /dep   .згдд - /pull .и - /b`n.зфн - /pay   .ьу - /me   .вщ - /do .екн - /try`n.пд  /dep to LSPD:    .сд  /dep to SD:`n.санг /dep to SANG:   .емс  /dep to EMS:`n.гов  /dep to GOV:   
 return
 
+
+Info:
+MsgBox, 0, Примечание, Скриншоты сохраняются в системную папку пользователя "Снимок экрана".
+return
+
+Setings:
+Gui, Настройки: Show, w365 h80, Настройки
+return
+
 BtnFuncA:
     if (btn1enable) {
       ImageButton.Create(_BTN_ID_1, "WIKI", DStyle*)
@@ -332,38 +366,34 @@ clipboard = Заявление в прокуратуру №0000`n`nЯ, граж
 
 return
 
-setings:
-Gui, 3: -MaximizeBox
-Gui, 3: Show, w400 h70, Настройки
-Gui, 3: Font, S10 CWhite, Bahnschrift SemiBold
-Gui, 3: Color, c4c4c4
-Gui, 3: Font, c0x000000
-Gui, 3: Add, Edit, x5 y20 w390 h21 vname, %name%
-Gui, 3: Add, Text, x5 y0 w400 h23 +0x200 +0x1, Введите отыгровку нашивки/бейджика без /do и точки
-Gui, 3: Add, Text, x5 y46 w70 h18 +0x200 +0x1, Ваш пол:
-Gui, 3: Add, Radio, x70 y43 w80 h23 Group vRadio1 Checked%Radio1%, Мужщина
-Gui, 3: Add, Radio, x150 y43 w80 h23 vRadio2 Checked%Radio2%, Женщина
-Gui, 3: Add, Button, x323 y47 w70 h20 gSave, Accept	
-return
 
 Save:
 Gui, submit, NoHide
-IniWrite, %name%, GosHelper/Settings.ini, USER, name
+IniWrite, %frac%, GosHelper/Settings.ini, USER, frac
+IniWrite, %type%, GosHelper/Settings.ini, USER, type
+IniWrite, %place%, GosHelper/Settings.ini, USER, place
+IniWrite, %otdel%, GosHelper/Settings.ini, USER, otdel
+IniWrite, %rank%, GosHelper/Settings.ini, USER, rank
+
+
 IniWrite, %Key1%, GosHelper/Settings.ini, USER, Key1
 IniWrite, %Key2%, GosHelper/Settings.ini, USER, Key2
 IniWrite, %Key3%, GosHelper/Settings.ini, USER, Key3
 IniWrite, %Key4%, GosHelper/Settings.ini, USER, Key4
 IniWrite, %Key5%, GosHelper/Settings.ini, USER, Key5
+
 IniWrite, %Key6%, GosHelper/Settings.ini, USER, Key6
 IniWrite, %Key7%, GosHelper/Settings.ini, USER, Key7
 IniWrite, %Key8%, GosHelper/Settings.ini, USER, Key8
 IniWrite, %Key9%, GosHelper/Settings.ini, USER, Key9
 IniWrite, %Key10%, GosHelper/Settings.ini, USER, Key10
+
 IniWrite, %Key11%, GosHelper/Settings.ini, USER, Key11
 IniWrite, %Key12%, GosHelper/Settings.ini, USER, Key12
 IniWrite, %Key13%, GosHelper/Settings.ini, USER, Key13
 IniWrite, %Key14%, GosHelper/Settings.ini, USER, Key14
 IniWrite, %Key15%, GosHelper/Settings.ini, USER, Key15
+
 IniWrite, %Radio1%, GosHelper/Settings.ini, USER, Gender1
 IniWrite, %Radio2%, GosHelper/Settings.ini, USER, Gender2
 MsgBox, 0, SAVE, Данные сохранены.
@@ -376,13 +406,89 @@ return
 
 ;======================================================================================================================Хоткии
 
+ChatOpen()
+{
+sleep 300
+SendInput, {t}
+sleep 250
+}
+FastSend(msg)
+{
+    Clipboard = %msg%
+    sleep 300
+    Send ^v
+    sleep 300
+}
+
+TransformRank(f, r)
+{
+    if f = LSCSD
+        {
+            switch r
+            {
+                case 13: return "Assistant Sheriff"
+                case 14: return "Undersheriff"
+                case 15: return "Sheriff"
+                default: return "Должность"
+            }
+        }
+        if f = FIB
+            {
+                switch r
+                {
+                    case 13: return "Assistant Director"
+                    case 14: return "Deputy of Director"
+                    case 15: return "Director"
+                    default: return "Должность"
+                }
+            }
+        
+        if f = LSPD
+            {
+                switch r
+                {
+                    case 13: return "Assistant Chief"
+                    case 14: return "Deputy Chief"
+                    case 15: return "Chief"
+                    default: return "Должность"
+                }
+            }
+            return "Должность"
+}
+
 Key1:
 SendMessage, 0x50,, 0x4190419,, A
-IniRead, name, GosHelper/Settings.ini, USER, name
-SendInput, {T}
-sleep 200
-SendInput, /do LSCSD | Ass.Sheriff {Enter}
+IniRead, frac, GosHelper/Settings.ini, USER, frac
+IniRead, otdel, GosHelper/Settings.ini, USER, otdel
+IniRead, rank, GosHelper/Settings.ini, USER, rank
+IniRead, place, GosHelper/Settings.ini, USER, place
+
+ChatOpen()
+if rank > 12
+{
+otdel:= TransformRank(frac, rank)
+}
+temp_msg = /do [%frac% | %otdel%].
+FastSend(temp_msg)
+SendInput {Enter}
+
 return
+
+GuiManager(GuiNum, PictureFile, Height, Width) {
+    IfWinExist, Gui %GuiNum%
+    {
+        Gui %GuiNum%: Destroy
+    }
+    else
+    {   
+        Gui %GuiNum%: +LastFound +AlwaysOnTop -Caption +ToolWindow 
+        Gui %GuiNum%: Color, black 
+        Gui %GuiNum%: add, picture, h%Height% w%Width%, %PictureFile%
+        Winset, ExStyle, +0x20
+        WinSet, TransColor, 0 1000
+        Gui %GuiNum%: Show, x1 y1 NoActivate, Gui %GuiNum%
+    }
+}
 
 Key2:
 State4:=!State4
@@ -639,6 +745,11 @@ Else
     
 Gui 2: Destroy
 return
+
+Key8:
+;image saved in %A_ScriptDir%\GosHelper 
+Send #{PrintScreen}
+Return
 
 ;======================================================================================================================Команды
 
