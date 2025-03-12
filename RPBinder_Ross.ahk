@@ -39,7 +39,7 @@ URLDownloadToFile, https://i.yapx.ru/YjM3v.png, %A_ScriptDir%\GosHelper\logo1.pn
 
 IfnotExist, %A_ScriptDir%\GosHelper\discord.png
 {
-URLDownloadToFile, https://i.yapx.ru/YjM5Q.png, %A_ScriptDir%\GosHelper\discord.png
+URLDownloadToFile, https://i.yapx.ru/YjN80.png, %A_ScriptDir%\GosHelper\discord.png
 }
 
 ;======================================================================================================================Бейджик
